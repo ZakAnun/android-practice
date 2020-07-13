@@ -1,0 +1,3 @@
+include ':practice_annotation'
+include ':app'
+rootProject.name = "AndroidPractice"
