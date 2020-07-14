@@ -1,3 +1,7 @@
-include ':practice_annotation'
+include ':libAnnotation'
+include ':libProcessor'
+include ':libApBinding'
+include ':libAnnotationReflection'
+include ':practiceAnnotation'
 include ':app'
 rootProject.name = "AndroidPractice"

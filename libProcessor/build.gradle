@@ -1,0 +1,12 @@
+apply plugin: 'java-library'
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation project(':libAnnotation')
+    // java 文件生成库
+    implementation 'com.squareup:javapoet:1.13.0'
+}
+
+sourceCompatibility = "1.8"
+targetCompatibility = "1.8"

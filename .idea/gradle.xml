@@ -13,7 +13,11 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/practice_annotation" />
+            <option value="$PROJECT_DIR$/libAnnotation" />
+            <option value="$PROJECT_DIR$/libAnnotationReflection" />
+            <option value="$PROJECT_DIR$/libApBinding" />
+            <option value="$PROJECT_DIR$/libProcessor" />
+            <option value="$PROJECT_DIR$/practiceAnnotation" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
