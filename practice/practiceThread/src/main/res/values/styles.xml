@@ -1,0 +1,10 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="pthreadAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/pthreadColorPrimary</item>
+        <item name="colorPrimaryDark">@color/pthreadColorPrimaryDark</item>
+        <item name="colorAccent">@color/pthreadColorAccent</item>
+    </style>
+
+</resources>

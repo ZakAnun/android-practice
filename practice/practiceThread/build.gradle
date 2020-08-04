@@ -1,0 +1,13 @@
+ext {
+    applicationId = "com.zakli.practicethread"
+}
+
+apply from: configs.common
+
+android {
+    resourcePrefix "pthread_"
+}
+
+dependencies {
+
+}

@@ -21,6 +21,7 @@
             <option value="$PROJECT_DIR$/javaModule/libProcessor" />
             <option value="$PROJECT_DIR$/practice" />
             <option value="$PROJECT_DIR$/practice/practiceAnnotation" />
+            <option value="$PROJECT_DIR$/practice/practiceThread" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

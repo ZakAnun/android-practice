@@ -17,7 +17,7 @@ import com.zakli.libannotation.BindView;
  * 1、通过反射实现 view 的绑定 -- libAnnotationReflection
  * 2、通过 annotation processor 实现 view 的绑定 -- libApBinding、libAnnotation、libProcessor
  */
-public class PracticeAnnotation extends AppCompatActivity {
+public class PracticeAnnotationActivity extends AppCompatActivity {
 
     @BindView(R.id.parent)
     View parent;
