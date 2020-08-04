@@ -1,0 +1,9 @@
+apply from: configs.common
+
+android {
+    resourcePrefix "libapbinding_"
+}
+
+dependencies {
+    api project(':javaModule:libAnnotation')
+}

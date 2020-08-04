@@ -1,0 +1,72 @@
+apply from: configs.cc
+apply from: configs.kotlin
+
+android {
+    compileSdkVersion compileSdk
+
+    defaultConfig {
+        minSdkVersion minSdk
+        targetSdkVersion targetSdk
+
+        consumerProguardFiles 'proguard-rules.pro', 'consumer-rules.pro'
+
+        multiDexEnabled true
+
+        ndk {
+            abiFilters 'armeabi-v7a'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    dataBinding {
+        enabled true
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation "${deps.kotlin.stdlib}"
+    implementation "${deps.android.ktx.core}"
+    implementation "${deps.android.appcompat}"
+    implementation "${deps.android.constraintlayout}"
+    testImplementation "${deps.test.junit}"
+    androidTestImplementation "${deps.test.runner}"
+    androidTestImplementation "${deps.test.espresso}"
+}
+
+if (runAsApp) {
+    // 是否是主App
+    def isMainApp = project.ext.has("mainApp") && project.ext.mainApp
+    print("isMainApp --- $isMainApp")
+
+    // 如果未指定组件包名，则使用测试包名（绑定了微信）
+    if (!project.hasProperty('applicationId')) {
+        project.ext.applicationId = APPLICATION_ID_DEBUG
+    }
+
+    android {
+        defaultConfig {
+            applicationId project.ext.applicationId
+            versionName VERSION_NAME
+            versionCode VERSION_CODE as int
+
+            vectorDrawables.useSupportLibrary = true
+            renderscriptTargetApi targetSdk
+            renderscriptSupportModeEnabled true
+        }
+
+        buildTypes {
+            debug {
+                signingConfig signingConfigs.debug
+            }
+        }
+    }
+
+    dependencies {
+        // 可以加载调试 app 的配置
+    }
+}

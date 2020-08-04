@@ -12,12 +12,15 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/androidModule" />
+            <option value="$PROJECT_DIR$/androidModule/libAnnotationReflection" />
+            <option value="$PROJECT_DIR$/androidModule/libApBinding" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/libAnnotation" />
-            <option value="$PROJECT_DIR$/libAnnotationReflection" />
-            <option value="$PROJECT_DIR$/libApBinding" />
-            <option value="$PROJECT_DIR$/libProcessor" />
-            <option value="$PROJECT_DIR$/practiceAnnotation" />
+            <option value="$PROJECT_DIR$/javaModule" />
+            <option value="$PROJECT_DIR$/javaModule/libAnnotation" />
+            <option value="$PROJECT_DIR$/javaModule/libProcessor" />
+            <option value="$PROJECT_DIR$/practice" />
+            <option value="$PROJECT_DIR$/practice/practiceAnnotation" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

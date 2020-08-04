@@ -1,0 +1,9 @@
+apply from: configs.common
+
+android {
+    resourcePrefix "libar_"
+}
+
+dependencies {
+
+}

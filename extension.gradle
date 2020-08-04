@@ -1,0 +1,17 @@
+ext {
+    compileSdk = 29
+    minSdk = 21
+    targetSdk = 29
+
+    dirs = [
+            gradle: "${rootDir}/gradle"
+    ]
+
+    configs = [
+            javaLib: "${dirs.gradle}/javaLib.gradle",
+            androidLib: "${dirs.gradle}/androidLib.gradle",
+            common: "${dirs.gradle}/common.gradle",
+            cc: "${dirs.gradle}/cc.gradle",
+            kotlin: "${dirs.gradle}/kotlin.gradle"
+    ]
+}

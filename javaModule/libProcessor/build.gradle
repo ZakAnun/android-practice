@@ -1,0 +1,7 @@
+apply from: configs.javaLib
+
+dependencies {
+    implementation project(':javaModule:libAnnotation')
+    // java 文件生成库
+    implementation 'com.squareup:javapoet:1.13.0'
+}

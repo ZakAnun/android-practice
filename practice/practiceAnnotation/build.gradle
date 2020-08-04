@@ -1,0 +1,18 @@
+ext {
+    applicationId = "com.zakli.practiceannotation"
+}
+
+apply from: configs.common
+
+android {
+    resourcePrefix "pannotation_"
+}
+
+dependencies {
+    // 运行时反射进行 view binding
+//    implementation project(':androidModule:libAnnotationReflection')
+
+    // 编译之前生成相关的代码，进行 view binding
+    implementation project(':androidModule:libApBinding')
+    kapt project(':javaModule:libProcessor')
+}

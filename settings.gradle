@@ -1,7 +1,17 @@
-include ':libAnnotation'
-include ':libProcessor'
-include ':libApBinding'
-include ':libAnnotationReflection'
-include ':practiceAnnotation'
-include ':app'
 rootProject.name = "AndroidPractice"
+
+include ':app'
+
+//======
+// Practice Module
+//======
+// module insert line
+
+// Android
+include ':androidModule:libApBinding'
+include ':androidModule:libAnnotationReflection'
+// Java
+include ':javaModule:libAnnotation'
+include ':javaModule:libProcessor'
+// Practice
+include ':practice:practiceAnnotation'

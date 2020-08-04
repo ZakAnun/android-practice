@@ -1,0 +1,4 @@
+project.apply plugin: 'cc-register'
+
+//开启app内部多进程组件调用
+ccregister.multiProcessEnabled = false
