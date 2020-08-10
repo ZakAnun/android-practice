@@ -1,3 +1,5 @@
 <resources>
     <string name="pthread_name">ThreadPractice</string>
+    <string name="pthread_handler_thread">启动 HandlerThread</string>
+    <string name="pthread_show_msg">HandlerThreadName: %s, currentProgress: %d</string>
 </resources>

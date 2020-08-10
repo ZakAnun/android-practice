@@ -8,14 +8,22 @@
     android:layout_height="match_parent"
     tools:context=".PracticeThreadActivity">
 
+    <Button
+        android:id="@+id/startHt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/parent"
+        app:layout_constraintTop_toTopOf="@id/parent"
+        android:text="@string/pthread_handler_thread"/>
+
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
+        android:text="Practice Thread!"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
