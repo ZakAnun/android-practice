@@ -9,6 +9,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        mainTitle.text = "self mac add"
+        selfMac.text = "self mac add"
+        workMac.text = "work mac add"
     }
 }
