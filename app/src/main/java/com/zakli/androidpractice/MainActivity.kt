@@ -10,6 +10,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         selfMac.text = "self mac add second"
-        workMac.text = "work mac add"
+        workMac.text = "work mac add second"
     }
 }
