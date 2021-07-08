@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.zakli.practicehandler">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/phandler_icon"
+        android:label="@string/phandler_name"
+        android:roundIcon="@mipmap/phandler_icon_round"
+        android:supportsRtl="true"
+        android:theme="@style/phandlerAppTheme">
+
+        <activity android:name=".PracticeHandlerActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+    </application>
+
+</manifest>

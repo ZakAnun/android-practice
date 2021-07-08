@@ -1,0 +1,10 @@
+<resources>
+    <string name="phandler_name">HandlerPractice</string>
+    
+    <string name="phandler_set_sync_protect">设置同步屏障</string>
+    <string name="phandler_del_sync_protect">删除同步屏障</string>
+    <string name="phandler_insert_sync_msg">插入同步信息</string>
+    <string name="phandler_insert_async_msg">插入异步信息</string>
+    <string name="phandler_receive_sync_msg">收到同步信息</string>
+    <string name="phandler_receive_async_msg">收到异步信息</string>
+</resources>

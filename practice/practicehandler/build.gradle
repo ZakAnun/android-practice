@@ -1,0 +1,13 @@
+ext {
+    applicationId = "com.zakli.practicehandler"
+}
+
+apply from: configs.common
+
+android {
+    resourcePrefix "phandler_"
+}
+
+dependencies {
+
+}
