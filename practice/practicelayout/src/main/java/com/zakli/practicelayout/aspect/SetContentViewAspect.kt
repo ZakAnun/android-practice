@@ -6,6 +6,11 @@ import org.aspectj.lang.ProceedingJoinPoint
 import org.aspectj.lang.annotation.Around
 import org.aspectj.lang.annotation.Aspect
 
+/**
+ * 这是 Aspect 的简单使用，还有更多的操作标识就查看文档吧
+ * 这个 demo，可以在 LayoutTimeConsumeActivity#setContentView 执行的时候，将加载布局时间的代码加进去
+ * 运行这个 demo，可以看到两个日志（因为在 onCreate 里也打了）
+ */
 @Aspect
 class SetContentViewAspect {
 
