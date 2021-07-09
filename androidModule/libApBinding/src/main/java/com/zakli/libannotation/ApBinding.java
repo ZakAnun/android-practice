@@ -19,15 +19,11 @@ public class ApBinding {
             Class activityClass = Class.forName(activity.getClass().getCanonicalName());
             Constructor constructor = bindingClass.getDeclaredConstructor(activityClass);
             constructor.newInstance(activity);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        } catch (ClassNotFoundException |
+                InstantiationException |
+                InvocationTargetException |
+                NoSuchMethodException |
+                IllegalAccessException e) {
             e.printStackTrace();
         }
     }

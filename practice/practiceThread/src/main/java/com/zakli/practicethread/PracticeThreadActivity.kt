@@ -3,9 +3,10 @@ package com.zakli.practicethread
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.pthread_main.*
 
 class PracticeThreadActivity: AppCompatActivity() {
 
@@ -15,7 +16,8 @@ class PracticeThreadActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.pthread_main)
         var count = 0
-        startHt.setOnClickListener {
+        val textView = findViewById<TextView>(R.id.textView)
+        findViewById<Button>(R.id.startHt).setOnClickListener {
             val name = "HandlerThread-$count"
             val msgHandler = Handler {
                 val what = it.what

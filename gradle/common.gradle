@@ -21,16 +21,11 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
-    dataBinding {
-        enabled true
-    }
 }
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "${deps.kotlin.stdlib}"
-    implementation "${deps.android.ktx.core}"
     implementation "${deps.android.appcompat}"
     implementation "${deps.android.constraintlayout}"
     testImplementation "${deps.test.junit}"

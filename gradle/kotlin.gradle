@@ -1,15 +1,7 @@
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
-
-androidExtensions {
-    experimental = true
-}
 
 dependencies {
     // Kotlin
     api deps.kotlin.stdlibJdk7
-
-    // Android KTX
-    api deps.android.ktx.core
 }
