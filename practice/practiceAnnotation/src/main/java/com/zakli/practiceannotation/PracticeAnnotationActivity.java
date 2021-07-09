@@ -19,10 +19,11 @@ import com.zakli.libannotation.BindView;
  */
 public class PracticeAnnotationActivity extends AppCompatActivity {
 
-    @BindView(R.id.parent)
-    View parent;
-    @BindView(R.id.textView)
-    TextView textView;
+    // 这里需要一个常量，理解用法就好
+//    @BindView(R.id.parent)
+//    View parent;
+//    @BindView(R.id.textView)
+//    TextView textView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -32,7 +33,7 @@ public class PracticeAnnotationActivity extends AppCompatActivity {
 //        textView.setText("reflection binding");
 
         ApBinding.bind(this);
-        textView.setText("processor binding");
-        parent.setBackgroundColor(Color.GREEN);
+//        textView.setText("processor binding");
+//        parent.setBackgroundColor(Color.GREEN);
     }
 }

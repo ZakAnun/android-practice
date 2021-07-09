@@ -1,0 +1,21 @@
+ext {
+    applicationId = "com.zakli.practicelayout"
+}
+
+apply from: configs.common
+apply plugin: 'android-aspectjx'
+
+android {
+    resourcePrefix "playout_"
+}
+
+aspectjx {
+    // 关闭AspectJX功能，传 false（默认 true）
+    enabled true
+    // 排除所有 package 路径中包含指定名称的 class
+    exclude 'androidx','kotlin','com.google','com.squareup','org.apache','android.support'
+}
+
+dependencies {
+    api 'org.aspectj:aspectjrt:1.9.5'
+}

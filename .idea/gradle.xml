@@ -23,6 +23,7 @@
             <option value="$PROJECT_DIR$/practice/practiceAnnotation" />
             <option value="$PROJECT_DIR$/practice/practiceThread" />
             <option value="$PROJECT_DIR$/practice/practicehandler" />
+            <option value="$PROJECT_DIR$/practice/practicelayout" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
