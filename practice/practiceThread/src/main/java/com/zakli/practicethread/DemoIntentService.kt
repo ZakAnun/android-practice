@@ -18,18 +18,18 @@ class DemoIntentService: IntentService(TAG) {
             val uiMessenger = extras?.get("messenger") as? Messenger
             when (getStringExtra("action")) {
                 "action_one" -> {
-                    Thread.sleep(2000)
+                    Thread.sleep(1000)
                     uiMessenger?.run {
                         val msg = Message.obtain()
                         msg.what = 1
                         msg.obj = "action_one execute complete"
                         send(msg)
                     }
-                    Log.d(TAG, "onHandleIntent: action_one do something ok after 2s")
+                    Log.d(TAG, "onHandleIntent: action_one do something ok after 1s")
                 }
                 "action_two" -> {
-                    Thread.sleep(1000)
-                    Log.d(TAG, "onHandleIntent: action_two do something ok after 1s")
+                    Thread.sleep(2000)
+                    Log.d(TAG, "onHandleIntent: action_two do something ok after 2s")
                     uiMessenger?.run {
                         val msg = Message.obtain()
                         msg.what = 2

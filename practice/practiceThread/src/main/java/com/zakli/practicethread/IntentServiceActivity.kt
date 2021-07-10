@@ -53,12 +53,23 @@ class IntentServiceActivity: AppCompatActivity() {
             true
         }
 
+        var hasClick = false
         findViewById<TextView>(R.id.pIsSendMsg).setOnClickListener {
             // 这里的消息会等下面四个消息处理完之后，再开始处理
-            startService(Intent(this, DemoIntentService::class.java).apply {
-                putExtra("action", "action_two")
-                putExtra("messenger", Messenger(updateUIHandler))
-            })
+            if (hasClick) {
+                (it as TextView).text = getString(R.string.pthread_one)
+                startService(Intent(this, DemoIntentService::class.java).apply {
+                    putExtra("action", "action_two")
+                    putExtra("messenger", Messenger(updateUIHandler))
+                })
+            } else {
+                (it as TextView).text = getString(R.string.pthread_two)
+                startService(Intent(this, DemoIntentService::class.java).apply {
+                    putExtra("action", "action_one")
+                    putExtra("messenger", Messenger(updateUIHandler))
+                })
+            }
+            hasClick = !hasClick
         }
 
         startService(Intent(this, DemoIntentService::class.java).apply {

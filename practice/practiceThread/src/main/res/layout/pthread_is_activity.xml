@@ -6,7 +6,7 @@
 
     <TextView
         android:id="@+id/pIsSendMsg"
-        android:text="@string/pthread_two"
+        android:text="@string/pthread_one"
         style="@style/pthreadCommonTvStyle"/>
 
     <TextView

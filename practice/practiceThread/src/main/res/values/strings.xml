@@ -5,4 +5,5 @@
     <string name="pthread_ht">HandlerThread Demo</string>
     <string name="pthread_is">IntentService Demo</string>
     <string name="pthread_two">模拟处理 2 秒耗时任务</string>
+    <string name="pthread_one">模拟处理 1 秒耗时任务</string>
 </resources>
