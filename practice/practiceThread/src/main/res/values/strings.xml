@@ -2,4 +2,7 @@
     <string name="pthread_name">ThreadPractice</string>
     <string name="pthread_handler_thread">启动 HandlerThread</string>
     <string name="pthread_show_msg">HandlerThreadName: %s, currentProgress: %d</string>
+    <string name="pthread_ht">HandlerThread Demo</string>
+    <string name="pthread_is">IntentService Demo</string>
+    <string name="pthread_two">模拟处理 2 秒耗时任务</string>
 </resources>

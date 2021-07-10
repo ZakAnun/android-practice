@@ -6,7 +6,7 @@
     android:id="@+id/parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PracticeThreadActivity">
+    tools:context=".HandlerThreadActivity">
 
     <Button
         android:id="@+id/startHt"

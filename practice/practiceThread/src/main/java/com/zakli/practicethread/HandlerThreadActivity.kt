@@ -1,5 +1,7 @@
 package com.zakli.practicethread
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -8,13 +10,21 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
-class PracticeThreadActivity: AppCompatActivity() {
+class HandlerThreadActivity: AppCompatActivity() {
+
+    companion object {
+        private const val TAG = "HandlerThreadActivity"
+
+        fun startActivity(context: Context) {
+            context.startActivity(Intent(context, HandlerThreadActivity::class.java))
+        }
+    }
 
     private val msgHandlerList = ArrayList<Handler>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.pthread_main)
+        setContentView(R.layout.pthread_ht_activity)
         var count = 0
         val textView = findViewById<TextView>(R.id.textView)
         findViewById<Button>(R.id.startHt).setOnClickListener {

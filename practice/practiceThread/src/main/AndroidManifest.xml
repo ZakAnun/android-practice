@@ -9,12 +9,16 @@
         android:supportsRtl="true"
         android:theme="@style/pthreadAppTheme">
 
-        <activity android:name="com.zakli.practicethread.PracticeThreadActivity">
+        <activity android:name=".HIActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".HandlerThreadActivity"/>
+        <activity android:name=".IntentServiceActivity"/>
+        <service android:name=".DemoIntentService"/>
     </application>
 </manifest>
