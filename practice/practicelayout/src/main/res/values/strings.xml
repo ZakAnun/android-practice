@@ -1,3 +1,7 @@
 <resources>
     <string name="playout_name">LayoutPractice</string>
+
+    <string name="playout_tc">获取布局加载耗时的方式</string>
+    <string name="playout_draw_opti">绘制优化</string>
+    <string name="playout_show_view_stub">显示 ViewStub</string>
 </resources>

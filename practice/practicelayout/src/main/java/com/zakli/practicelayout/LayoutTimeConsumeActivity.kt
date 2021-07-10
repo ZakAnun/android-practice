@@ -1,6 +1,7 @@
 package com.zakli.practicelayout
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.os.SystemClock
 import android.util.AttributeSet
@@ -23,6 +24,11 @@ class LayoutTimeConsumeActivity: AppCompatActivity() {
 
     companion object {
         private const val TAG = "LayoutTcActivity"
+
+        fun startActivity(context: Context) {
+            context.startActivity(
+                Intent(context, LayoutTimeConsumeActivity::class.java))
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
