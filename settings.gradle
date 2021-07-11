@@ -16,5 +16,6 @@ include ':javaModule:libProcessor'
 // Practice
 include ':practice:practiceAnnotation'
 include ':practice:practiceThread'
-include ':practice:practicehandler'
-include ':practice:practicelayout'
+include ':practice:practiceHandler'
+include ':practice:practiceLayout'
+include ':practice:practiceView'
