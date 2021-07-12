@@ -31,8 +31,34 @@
     </FrameLayout>
 
     <com.zakli.practiceview.view.PViewHorizontalLayout
+        android:id="@+id/horizontalLayout"
         android:layout_width="match_parent"
         android:layout_height="100dp">
+
+        <com.zakli.practiceview.view.PViewCircleView
+            android:id="@+id/circleView"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:padding="12dp"
+            app:PViewCircleColor="@color/pviewColorAccent"/>
+
+        <com.zakli.practiceview.view.PViewCircleView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            app:PViewCircleColor="@color/pviewColorPrimary"/>
+
+        <FrameLayout
+            android:layout_width="50dp"
+            android:layout_height="50dp">
+
+            <com.zakli.practiceview.view.PViewCircleView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="8dp"
+                app:PViewCircleColor="@color/pviewColorPrimaryDark"/>
+
+        </FrameLayout>
 
         <com.zakli.practiceview.view.PViewCircleView
             android:layout_width="100dp"
@@ -63,6 +89,48 @@
             android:layout_height="100dp"
             android:padding="12dp"
             app:PViewCircleColor="@color/pviewColorAccent"/>
+
+        <com.zakli.practiceview.view.PViewCircleView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            app:PViewCircleColor="@color/pviewColorPrimary"/>
+
+        <FrameLayout
+            android:layout_width="50dp"
+            android:layout_height="50dp">
+
+            <com.zakli.practiceview.view.PViewCircleView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="8dp"
+                app:PViewCircleColor="@color/pviewColorPrimaryDark"/>
+
+        </FrameLayout>
+
+        <com.zakli.practiceview.view.PViewCircleView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:padding="12dp"
+            app:PViewCircleColor="@color/pviewColorAccent"/>
+
+        <com.zakli.practiceview.view.PViewCircleView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            app:PViewCircleColor="@color/pviewColorPrimary"/>
+
+        <FrameLayout
+            android:layout_width="50dp"
+            android:layout_height="50dp">
+
+            <com.zakli.practiceview.view.PViewCircleView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="8dp"
+                app:PViewCircleColor="@color/pviewColorPrimaryDark"/>
+
+        </FrameLayout>
 
     </com.zakli.practiceview.view.PViewHorizontalLayout>
 </LinearLayout>

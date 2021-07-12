@@ -1,7 +1,10 @@
 package com.zakli.practiceview
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.zakli.practiceview.view.PViewCircleView
+import com.zakli.practiceview.view.PViewHorizontalLayout
 
 /**
  * 自定义 View 分类
@@ -53,6 +56,33 @@ import androidx.appcompat.app.AppCompatActivity
  *    - measureChildren(): 遍历所有的 childView
  *    - getChildMeasureSpec(): 确定测量规格
  *    - measureChild(): 调用测量规格
+ *
+ * 滑动冲突
+ *  - 常见的滑动冲突场景
+ *   - 外部滑动方向与内部滑动方向不一致
+ *    - 常见于 ViewPager 和 Fragment 配合使用的效果，可以左右滑动切换页面，每个页面可以上下滑动（但 ViewPager 内部处理了这种滑动冲突）
+ *   - 外部滑动方向与内部滑动方向一致
+ *    - 不处理的话系统无法知道用户想要哪一层滑动
+ *   - 以上两种情况嵌套
+ *  - 处理规则
+ *   - 根据滑动是水平滑动还是竖直滑动来判断由谁来拦截（竖直方向滑动距离大就判断为竖直滑动否则判断为水平滑动）
+ *   - 如果无法根据滑动的距离差、角度以及速度来判断，则需要在业务上区分（如某种状态需要外部 View 响应滑动，另一种状态需要内部 View 响应滑动）
+ *   - 同样需要根据业务定义来区分
+ *  - 处理方式
+ *   - 外部拦截法（父容器#onInterceptTouchEvent()）
+ *    - 指点击事件都先经过父容器的拦截处理，如果父容器需要处理这个事件就拦截，否则就不拦截（符合事件分发机制）
+ *    这种方式需要重写父容器的 onInterceptTouchEvent()，在内部做相应的拦截即可
+ *    - ACTION_DOWN 父容器必须返回 false（不拦截，因为一旦拦截，那后续的 ACTION_UP 和 ACTION_MOVE 都会直接由父容器处理，无法传递到子元素中）
+ *    - ACTION_MOVE 可以根据需要来决定是否拦截，在父容器中 return true 表示拦截，return false 表示不拦截
+ *    - ACTION_UP 必须返回 false
+ *   - 内部拦截法（子 View#dispatchTouchEvent()）
+ *    - 指父容器不拦截任何事件，所有的事件都传递给子 View，如果子 View 需要处理事件就直接消耗掉，否则就交由父容器进行处理
+ *    - 这种方式和 Android 中的事件分发机制不一致，需要配合 parent#requestDisallowInterceptTouchEvent()
+ *    - 因为子 View 的事件是由父容器传递过来的，在子 View 的 ACTION_DOWN 事件里调用 requestDisallowInterceptTouchEvent()，不会
+ *    因为父容器在 ACTION_DOWN 重置而失效，因为 ACTION_DOWN 事件不受 FLAG_DISALLOW_INTERCEPT 这个标志位的控制，所以一旦父容器拦截
+ *    了 ACTION_DOWN 事件，那么所有事件都无法传递到子元素中去，这样内部拦截就无法起作用了
+ *    所以父 View#onInterceptHoverEvent() 可以修改为 `return event.getAction() != MotionEvent.ACTION_DOWN;`
+ *
  */
 class ViewActivity: AppCompatActivity() {
 
@@ -61,6 +91,11 @@ class ViewActivity: AppCompatActivity() {
 
         setContentView(R.layout.pview_activity)
 
-
+        findViewById<PViewHorizontalLayout>(R.id.horizontalLayout).setOnClickListener {
+            Toast.makeText(this, "点击了能滚的", Toast.LENGTH_SHORT).show()
+        }
+        findViewById<PViewCircleView>(R.id.circleView).setOnClickListener {
+            Toast.makeText(this, "点击了第一个圆", Toast.LENGTH_SHORT).show()
+        }
     }
 }
