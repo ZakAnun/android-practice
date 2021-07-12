@@ -83,6 +83,34 @@ import com.zakli.practiceview.view.PViewHorizontalLayout
  *    了 ACTION_DOWN 事件，那么所有事件都无法传递到子元素中去，这样内部拦截就无法起作用了
  *    所以父 View#onInterceptHoverEvent() 可以修改为 `return event.getAction() != MotionEvent.ACTION_DOWN;`
  *
+ * View#post() 解析
+ *  - 判断 mAttachInfo 是否为 null（AttachInfo 是 View 的静态内部类（内部持有 Handler 引用），每个 View 都会持有一个 AttachInfo 引用
+ *  - 不为 null，直接调用其内部 Handler#post
+ *  - 为 null，先缓存 Runnable 任务
+ *   - getRunQueue().post()
+ *    - 返回 HandlerActionQueue，即调用了 HandlerActionQueue#post
+ *     - 将 Runnable 包装成 HandlerAction（仍然缓存起来）
+ *     - HandlerAction 表示一个待执行的任务，内部持有要执行的 Runnable 和延时时间
+ *     - postDelayed 创建了一个默认长度为 4 的 HandlerAction 用于保存 post 添加的任务（但此时任务并未被执行）
+ *   - AttachInfo 持有当前线程的 Handler 和 Window 的 ViewRootImpl 对象
+ *    - AttachInfo 在 ViewRootImpl 的构造方法中创建（每个 view 都会共用这个 AttachInfo 对象）
+ *    - View#dispatchAttachedToWindow 中，会给每个 View 的 mAttachInfo 赋值并执行之前缓存的任务，通过主线程的 Handler 发送并处理任务
+ *     - 给当前 View 赋值 AttachInfo（此时所有的 View 共用一个 AttachInfo（同一个 ViewRootImpl））
+ *     - 判断 mRunQueue（HandlerActionQueue） 是否为空，不为空则执行 executeActions（post 到主线程的 Handler 中）
+ *      - 拿到任务队列 mActions
+ *      - 遍历所有的任务并通过 handler#postDelayed
+ *      - 至空 mActions，后续的 post 任务将被加载 AttachInfo 中，直接用 Handler 发送消息
+ *     - 回调 View#onAttachedToWindow()
+ *     - 调用时机
+ *      - ViewRootImpl#dispatchAttachedToWindow 在 performTraversals() 中调用，这个方法会依次完成 View 绘制的三大流程：测量、布局、绘制
+ *      - 每个 Activity 都关联一个 Window 对象，用来描述应用程序窗口，每个窗口内部包含一个 DecorView 对象
+ *       - 先调用 decorView#dispatchAttachedToWindow()，并且把 mAttach 传递给子 View
+ *        - 这里是会调用到 ViewGroup#dispatchAttachedToWindow，会遍历所有子 View，然后调用子 View#dispatchAttachedToWindow，并给每个 View 传递 AttachInfo
+ *       - View 绘制流程测量阶段 performMeasure()
+ *       - View 绘制流程布局阶段 performLayout()
+ *       - View 绘制流程绘制阶段 performDraw()
+ *  - 通过 View#post() 添加的任务，是在 View 的绘制流程的开始阶段。post 任务被放到消息队列的末尾，此时 post 的任务已经在绘制之后
+ *  即 View 的绘制流程结束后，再去获取宽高就可以正确获取到 View 的宽高
  */
 class ViewActivity: AppCompatActivity() {
 
