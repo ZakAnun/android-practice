@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="pviewColorPrimary">#6200EE</color>
+    <color name="pviewColorPrimaryDark">#3700B3</color>
+    <color name="pviewColorAccent">#03DAC5</color>
+</resources>

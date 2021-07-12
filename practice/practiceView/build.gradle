@@ -1,0 +1,13 @@
+ext {
+    applicationId = "com.zakli.practiceview"
+}
+
+apply from: configs.common
+
+android {
+    resourcePrefix "pview_"
+}
+
+dependencies {
+
+}
