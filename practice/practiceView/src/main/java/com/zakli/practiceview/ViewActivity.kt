@@ -111,6 +111,101 @@ import com.zakli.practiceview.view.PViewHorizontalLayout
  *       - View 绘制流程绘制阶段 performDraw()
  *  - 通过 View#post() 添加的任务，是在 View 的绘制流程的开始阶段。post 任务被放到消息队列的末尾，此时 post 的任务已经在绘制之后
  *  即 View 的绘制流程结束后，再去获取宽高就可以正确获取到 View 的宽高
+ *
+ * View 的事件分发机制（即对 MotionEvent 事件分发的过程）
+ *  - dispatchTouchEvent
+ *   - 用于进行事件分发，如果事件能传递给当前 view，那这个方法一定会被调用，返回结果受当前 View#onTouchEvent 和
+ *   下级 View#dispatchTouchEvent 影响，表示是否消耗当前事件
+ *  - onInterceptTouchEvent
+ *   - 在 dispatchTouchEvent 内部调用，用来判断是否拦截某个事件，如果当前 View 拦截了某个事件，那么同一事件序列中（
+ *   DOWN、MOVE 和 UP 等）此方法不再被调用。返回结果表示是否拦截当前事件
+ *  - onTouchEvent
+ *   - 在 dispatchTouchEvent 中调用，用来处理点击事件，返回结果表示是否消耗当前事件，
+ *   如果不消耗，则在同一个事件序列中（DOWN、MOVE、UP 等），当前 View 无法再次接收到事件
+ *  - 伪代码
+ *  fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+ *    var consume = false
+ *    if (onInterceptTouchEvent(ev)) {
+ *      consume = onTouchEvent(ev)
+ *    } else {
+ *      consume = child.dispatchTouchEvent(ev)
+ *    }
+ *    return consume
+ *  }
+ *  - 对于根 ViewGroup 而言
+ *   - 点击事件产生后，首先会传递给它，此时 ViewGroup#dispatchTouchEvent 会被调用，
+ *   如果这个 ViewGroup#onInterceptTouchEvent 为 true 表示需要拦截当前事件，
+ *   那么事件就会交给这个 ViewGroup 处理，即它的 onTouchEvent 会被调用
+ *   如果这个 ViewGroup#onInterceptTouchEvent 为 false 表示步拦截当前事件，此时当前事件
+ *   会被继续传递给它的子 View，接着子 View#dispatchTouchEvent 会被调用
+ *   反复直到该事件最终被处理
+ *  - 对于 View 需要处理事件时
+ *   - 如果它设置了 onTouchListener，那么 OnTouchListener 的 onTouch 就会被回调，
+ *   如果 onTouch 返回 false，那么当前的 onTouchEvent 会被调用，
+ *   如果 onTouch 返回 true，那么 onTouchEvent 将不会被调用
+ *   （View 设置的 OnTouchListener 优先级高于自身的 onTouchEvent）
+ *   - onTouchEvent() 中如果当前设置了 OnClickListener，那么它的 onClick() 会被回调（OnClickListener 优先级最低，处于事件传递的尾端）
+ *  - 事件传递的顺序
+ *   - Activity -> Window -> View（事件总是先传递到 Activity，再传递给 Window，最后传递到 View，
+ *   顶层 View 收到事件后会按照事件分发机制进行分发事件
+ *   - 如果一个 View 的 OnTouchEvent 返回 false，那么它的父容器 onTouchEvent 将会被调用，
+ *   以此类推，如果所有的 View 都不处理这个事件，那么这个事件最终会传递到 Activity，让它处理（Activity 的 onTouchEvent 会被调用）
+ *  - 知识点
+ *   - 同一个事件序列是指从手指接触屏幕的那一刻开始，到手指离开屏幕的那一刻结束，在这个过程中，产生的一系列事件（DOWN -> MOVE -> UP）
+ *   - 正常情况下，一个事件序列只能被一个 View 拦截且消耗，因为一旦一个元素拦截了某次事件，那么同个事件序列内的所有事件都会交给它处理
+ *   因此同一事件序列中事件不能分发由两个 View 同时处理
+ *   - 某个 View 一旦开始处理事件，如果它不消耗 ACTION_DOWN 事件（onTouchEvent 返回了 false），那么同一个事件序列中的其他事件都不会
+ *   交给它来处理
+ *   - 如果 View 不消耗 ACTION_DOWN 以外的事件，那么这个点击事件会消失，此时副元素的 onTouchEvent 并不会被调用。并且当 View 可以
+ *   持续收到后续事件，最终这些消失的点击事件会传递给 Activity 处理
+ *   - 一个 View 一旦决定拦截，那么这个事件序列都只能由他处理
+ *   - ViewGroup 默认不拦截任何事件（Android ViewGroup 源码中 onInterceptTouchEvent 默认返回 false）
+ *   - View 没有 onInterceptTouchEvent，一旦点击事件传递给他，那么它的 onTouchEvent 就会被调用
+ *   - View 的 onTouchEvent 默认都会消耗事件（return true），除非它是不可点击的（clickable 和 longClickable 同时为 false）
+ *   View 的 longClickable 默认为 false，button clickable 默认为 true，textView clickable 默认为 false
+ *   - View 的 enable 不影响 onTouchEvent 的默认返回值，就算 View 是 disable 状态，只要它的 clickable 或 longClickable 一个为 true
+ *   那么它的 onTouchEvent 会返回 true
+ *   - onClick 会发生的前提是当前 View 是可点击的，并且能收到 DOWN 和 UP 事件
+ *   - 事件传递过程是有外向内，即事件总是先传递给父元素，然后在由父元素分发给子 View，通过 requestDisallowInterceptTouchEvent() 可以
+ *   在子元素中干预父元素的事件分发过程，但 ACTION_DOWN 事件除外
+ *  - 源码分析
+ *   - Activity#dispatchTouchEvent
+ *    - 获取 window 并调用其 superDispatchTouchEvent 进行分发
+ *    - 如果返回 false，activity 调用自己的 onTouchEvent 来处理事件
+ *   - PhoneWindow（是 Window 的唯一实现）
+ *    - PhoneWindow#superDispatchTouchEvent() 直接调用 mDecor(DecorView)#superDispatchTouchEvent()
+ *   - DecorView
+ *    - DecorView#superDispatchTouchEvent() 直接调用 ViewGroup#dispatchTouchEvent()
+ *   - ViewGroup#dispatchTouchEvent()（主要实现）
+ *    - mFirstTouchTarget 当事件由 ViewGroup 子类处理成功时，mFirstTouchTarget 会被赋值指向子 View，
+ *    如果是 ACTION_DOWN 事件，ViewGroup#onInterceptTouchEvent 返回了 true，那么 ACTION_MOVE 和 ACTION_UP
+ *    到来时，mFirstTouchTarget 为 null，直接拦截
+ *    如果是 ACTION_DOWN 事件，ViewGroup#onInterceptTouchEvent 返回了 false，mFirstTouchTarget 将不为空，
+ *    ACTION_MOVE 和 ACTION_UP 来到时，会走执行 if 中的判断
+ *    - 当 ACTION_MOVE 和 ACTION_UP 到来，并且 mFirstTouchTarget 为空（没有子 View 消费），
+ *    onInterceptTouchEvent 不会被再次调用，并且同一个事件序列的事件都交给它处理
+ *    - FLAG_DISALLOW_INTERCEPT 这个标记位通过 requestDisallowInterceptTouchEvent 设置，一般用在子 View 中
+ *    - 一旦 requestDisallowInterceptTouchEvent 设置后，ViewGroup 将无法拦截除 ACTION_DOWN 以外的其他点击事件
+ *    因为 ViewGroup 在分发事件时，如果是 ACTION_DOWN 就会重置 FLAG_DISALLOW_INTERCEPT 这个标志位，导致子 View 的标志位无效
+ *    - 如果 ViewGroup 不拦截事件时，遍历所有子 View，然后判断子 View 是否能够接收点击事件（点击是否在子 View 的区域）
+ *    如果某个子 View 可以接收到点击，那么事件就会传递给它来处理
+ *    - ViewGroup#dispatchTransformedTouchEvent
+ *     - 遍历子 View 时，child 不为 null，直接会调用子 View#dispatchTouchEvent() ，这样事件就交由子 View 处理
+ *     如果子 View#dispatchTouchEvent 返回 true，那么 mFirstTouchTarget 就会被赋值同时跳出循环
+ *     - 如果遍历所有的子 View 后事件没有被消费
+ *      - ViewGroup 没有子元素
+ *      - 子 View 处理了点击事件，但 dispatchTouchEvent 返回了 false，此时 dispatchTransformedTouchEvent 的 child 为 null
+ *      这里就会转到 View#dispatchTouchEvent（不是 ViewGroup#dispatchTouchEvent）
+ *     - 如果子 View#dispatchTouchEvent 返回 true，就会调用 View 或 ViewGroup 的 dispatchTouchEvent()
+ *   - View#dispatchTouchEvent（View 的事件分发）
+ *    - 因为 View 没有子 View，所有无法向下传递事件，只能自己处理
+ *    - 首先判断是否设置了 mOnTouchListener，如果 OnTouchListener#onTouch 返回 true，那么 onTouchEvent 不会被调用
+ *    OnTouchListener#onTouch 的优先级高于 onTouchEvent
+ *    - View 的 onTouchEvent()，只要 View 的 CLICKABLE、LONG_CLICKABLE 以及 CONTEXT_CLICKABLE 有一个为 true
+ *    那么 View 就会消费该事件
+ *    - 如果 View 设置了 OnClickListener，那么就会在 ACTION_UP 时调用它的 onClick 方法
+ *    - View 的 clickable
+ *     - 通过设置 OnClickListener 或 LongClickListener 可以分别改变 CLICKABLE 和 LONG_CLICKABLE 属性值
  */
 class ViewActivity: AppCompatActivity() {
 
