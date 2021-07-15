@@ -3,6 +3,7 @@ package com.zakli.practicehandler
 import android.os.*
 import android.util.Log
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 
 /**
@@ -55,6 +56,7 @@ import androidx.appcompat.app.AppCompatActivity
  *     直接删除 MessageQueue 的所有 Message，如果 MessageQueue 非头节点 Message 触发时间大于当前时间，删除该节点后面所有的 Message
  *     - quitSafely() safe 传 true，会 调 removeAllMessagesLocked()，遍历回收所有节点
  *    - 子线程中如果手动为其创建了 Looper，那么在处理完所有的消息后应该调用 quit() 来终止消息循环，否则会一直处于阻塞状态
+ *
  *  - MessageQueue: 消息队列，内部存储一组消息，以队列的形式对外提供插入消息和读取消息（读取操作本身伴随删除操作）
  *  采用单链表的数据结构来存储消息（因为单链表在插入和删除上又较好的性能）
  *   - 主要包含插入消息和读取消息（读取伴随着删除）两个操作，其中 enqueueMessage 的作用是往消息列表中插入一条消息，而 next 的作用
@@ -102,6 +104,7 @@ import androidx.appcompat.app.AppCompatActivity
  *    - 从 MessageQueue 中移除指定消息，移除方法采用了两个 while 循环，
  *    第一个循环从链表头部开始（头节点如果是待删除节点），移除连续符合条件的消息，并将头节点指针指向第一个不满足条件的节点
  *    第二个循环是从头部移除完成，再从新的头部轮询所有满足条件的节点（遍历删除头节点后每个满足条件的节点）
+ *
  *  - Message: 消息，分为硬件产生的消息（如点击、触摸）和软件生成的消息
  *   - 消息池（当消息池不为空时，可以直接从消息池中获取 Message 对象，而不是直接创建，提高效率）
  *   通过静态变量 sPool（数据类型为 Message），通过 next 成员变量维护一个消息池，静态变量 MAX_POOL_SIZE 代表消息池的可用大小（默认 50）
@@ -140,7 +143,9 @@ import androidx.appcompat.app.AppCompatActivity
  *   - Handler#enqueueMessage
  *    - 设置消息的 target 为发送该消息的 Handler 本身
  *    - 调用 MessageQueue#enqueueMessage()
+ *
  *  - ThreadLocal: 一个线程内部的数据存储类（保证线程内部数据在各线程间相互独立）
+ *
  *  - QA
  *   - Q: IdleHandler 的作用
  *   - A: 是 Handler 提供的一种在消息队列空闲时，执行任务的时机，当 MessageQueue 当前没有立即需要处理的消息时，
@@ -156,6 +161,44 @@ import androidx.appcompat.app.AppCompatActivity
  *   - Q: IdleHandler#queueIdle() 运行在哪个线程
  *   - A: queueIdle() 运行的线程，只和当前 MessageQueue 的 Looper 所在的线程有关，
  *   子线程一样可以构造 Looper，并添加 IdleHandler
+ *   - Q: View#onDraw 执行时，IdleHandler 会执行吗
+ *   - A: 不会，View#onDraw、View#invalidate 会往任务队列中添加任务，
+ *   最终会调用到 ViewRootImpl#scheduleTraversals()，而这个方法会往任务队列中 post 一个同步屏障，
+ *   正是这个同步屏障导致 MessageQueue 不会 idle（即不会执行 queueIdle）
+ *   详解: 在 onDraw() 直接或间接调用 invalidate()，ViewRootImpl 会向 MessageQueue 中 post 一个同步屏障
+ *   当 MessageQueue 轮询到这个同步屏障时，会等到 Choreographer$FrameDisplayEventReceiver 这个异步任务执行后，
+ *   才会执行其他任务（才有可能触发 idle），但是，Choreographer$FrameDisplayEventReceiver 这个任务里面又会执行
+ *   View#onDraw() 从而形成了一个无限循环，进而 idle 永远不会回调
+ *
+ * - 同步信息屏障对 IdleHandler 的影响
+ *  - 当 mMessage 是同步屏障，且后续没有异步消息，那么获取异步消息和获取同步消息都会失败（即 nextPollTimeoutMillis 会
+ *  被赋值为 -1），表示无限制休眠，pendingIdleHandlerCount 默认是 -1，所以会尝试赋值
+ *  - 由于同步屏障的存在，所以 mMessage 肯定不为空，同时 now < mMessages.when 肯定不成立，因为同步屏障在
+ *  ViewRootImpl#scheduleTraversals 中添加的，所以这个时间肯定比当前时间要早
+ *   - Choreographer 类中有一个 Looper 和一个 FrameHandler 变量，变量 USE_VSYNC 用于表示系统是否用了 Vsync 同步机制，
+ *   该值是通过读取系统属性 debug.choreographer.vsync 来获取的。如果系统使用了 Vsync 同步机制，
+ *   则创建一个 FrameDisplayEventReceiver 对象用于请求并接收 Vsync 事件，最后 Choreographer 创建了一个大小为 3 的
+ *   CallbackQueue 队列数组，用于保存不同类型的 Callback
+ *   （Callback 类型包括 CALLBACK_INPUT = 0;（输入） CALLBACK_ANIMATION = 1;（动画）
+ *   CALLBACK_TRAVERSAL = 2;（视图绘制） CALLBACK_COMMIT = 3;（提交，API = 23 是添加的）
+ *  - 综合以上两点，idle 不会回调，并且会让主线程休眠，直到一个异步 Message 添加到队列中，
+ *  这个 Message 就是（Choreographer$FrameDisplayEventReceiver）
+ *   - Choreographer$FrameDisplayEventReceiver#onVsync 这个方法会获取一个 Message 并将它设置为异步消息，
+ *   会把 Choreographer 四种类型的任务全部执行，其中 invalidate 添加的任务会包含在这里面
+ *
+ * - 既然 onDraw 中会往任务队列中 post 同步屏障，为什么不会影响 app 使用（没有感受到明显的卡顿）
+ * 因为这些操作只是每一帧时间里多了一个任务，从体验上来说几乎感受不到差别，但想要在 IdleHandler 中处理逻辑，
+ * 在这种情形下是不会执行的
+ *
+ * - 无限轮询的 View 动画导致 IdleHandler 不会被执行（普通的 View 动画，而不是属性动画，属性动画没这个问题）
+ * 因为 View 动画会一直调用 invalidate()，而这个方法前面分析过，会导致 IdleHandler 不会回调
+ *
+ * - 属性动画不会影响 IdleHandler 执行
+ * View 动画的每一帧都是通过 invalidate 来触发重绘的，而属性动画每一帧的绘制都是通过 Choreographer 的回调实现
+ * 属性动画开始时，会向 Choreographer 的任务队列里面 post 一个动画类型的任务，当垂直信号到来时，会执行里面的任务，
+ * 从而回调我们的任务，同时为了保证动画能过流畅进行，会再向 Choreographer 的任务队列 post 一个任务，保证下一帧
+ * 动画能够正常绘制，从而实现动画
+ * 本质上说，属性动画少了一个 post 同步屏障的步骤，后续的任务是能够执行的，当队列中没有任务时，自然就会回调 IdleHandler
  *
  */
 class PracticeHandlerActivity: AppCompatActivity() {
@@ -169,7 +212,7 @@ class PracticeHandlerActivity: AppCompatActivity() {
 
     private lateinit var handler: Handler
 
-//    @RequiresApi(Build.VERSION_CODES.M)
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -218,6 +261,14 @@ class PracticeHandlerActivity: AppCompatActivity() {
                 Log.d(TAG, "onCreate: API 21 及以前只能是同步信息")
             }
             handler.sendMessageDelayed(msg, 1000)
+        }
+
+        // IdleHandler 用法（会被添加到 mIdleHandlers 集合中）
+        // 当前 MessageQueue 中没有 Message 或没到第一条 Message 执行的时间，
+        // 此时 MessageQueue 会尝试执行 IdleHandler 中的任务
+        Looper.getMainLooper().queue.addIdleHandler {
+            // do something when free
+            false
         }
     }
 }
