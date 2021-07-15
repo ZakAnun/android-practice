@@ -29,7 +29,8 @@ import java.util.concurrent.ConcurrentHashMap
  *   - quit() 和 quitSafely() 是直接调用 Looper#quit、Looper#quitSafely
  *    - 这俩方法分别是调用 MessageQueue.quit(false)、MessageQueue.quit(true)
  *    - 调用后 Looper 不再接收新的消息，消息循环会被终结
- *    - 但 quitSafely 会将非延迟消息全部派发完成（removeAllFutureMessagesLocked），丢弃延迟消息
+ *    - 但 quitSafely 会将非延迟消息全部派发完成（removeAllFutureMessagesLocked），
+ *    丢弃延迟消息（一旦遇到延迟消息，那么后面的消息都会丢弃）
  *    - 而 quit 则是会将所有的消息都丢弃
  */
 object HandlerThreadController {
