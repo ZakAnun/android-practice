@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:id="@+id/fragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="600dp"/>
+
+    <TextView
+        android:id="@+id/changeFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:textSize="16sp"
+        android:text="@string/pmotion_go_second_fragment"
+        android:background="@color/pmotionColorAccent"
+        android:layout_gravity="bottom"/>
+
+</FrameLayout>

@@ -23,6 +23,7 @@
             <option value="$PROJECT_DIR$/practice/practiceAnnotation" />
             <option value="$PROJECT_DIR$/practice/practiceHandler" />
             <option value="$PROJECT_DIR$/practice/practiceLayout" />
+            <option value="$PROJECT_DIR$/practice/practiceMotion" />
             <option value="$PROJECT_DIR$/practice/practiceThread" />
             <option value="$PROJECT_DIR$/practice/practiceView" />
           </set>

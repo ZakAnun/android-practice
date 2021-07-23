@@ -1,0 +1,5 @@
+<resources>
+    <string name="pmotion_name">PracticeMotion</string>
+    <string name="pmotion_go_first_fragment">Motion Go First Fragment</string>
+    <string name="pmotion_go_second_fragment">Motion Go Second Fragment</string>
+</resources>
