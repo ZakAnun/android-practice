@@ -14,4 +14,11 @@
         app:layout_constraintTop_toTopOf="parent"
         android:transitionName="shared_element_container"/>
 
+    <View
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="@color/pmotionColorPrimary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

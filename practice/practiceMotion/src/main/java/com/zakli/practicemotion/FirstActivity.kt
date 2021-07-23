@@ -1,8 +1,10 @@
 package com.zakli.practicemotion
 
 import android.os.Bundle
+import android.view.Window
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback
 
 /**
  *
@@ -23,6 +25,18 @@ class FirstActivity: AppCompatActivity() {
     private var onShowFirstFragment = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        // Enable Activity Transitions. Optionally enable Activity transitions in your
+        // theme with <item name=”android:windowActivityTransitions”>true</item>.
+        window.requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
+
+        // Attach a callback used to capture the shared elements from this Activity to be used
+        // by the container transform transition
+        setExitSharedElementCallback(MaterialContainerTransformSharedElementCallback())
+
+        // Keep system bars (status bar, navigation bar) persistent throughout the transition.
+        window.sharedElementsUseOverlay = false
+
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.pmotion_first_activity)
@@ -32,7 +46,7 @@ class FirstActivity: AppCompatActivity() {
             commit()
         }
 
-        // Container transform
+        // Container transform（Fragment）
         findViewById<TextView>(R.id.changeFragment).setOnClickListener {
             val textView = it as TextView
             if (onShowFirstFragment) {
@@ -51,6 +65,11 @@ class FirstActivity: AppCompatActivity() {
                     .commit()
             }
             onShowFirstFragment = !onShowFirstFragment
+        }
+
+        // Container transform（Activity）
+        findViewById<TextView>(R.id.changeActivity).setOnClickListener {
+            SecondActivity.startActivity(this, it)
         }
     }
 }

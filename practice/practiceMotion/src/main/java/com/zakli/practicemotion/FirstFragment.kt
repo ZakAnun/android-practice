@@ -5,7 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.google.android.material.transition.Hold
 import com.google.android.material.transition.MaterialContainerTransform
+import com.google.android.material.transition.MaterialElevationScale
 
 /**
  *
@@ -25,6 +27,8 @@ class FirstFragment: Fragment() {
         super.onCreate(savedInstanceState)
 
         sharedElementEnterTransition = MaterialContainerTransform()
+        // 可以设置其他元素的消失状态
+        exitTransition = MaterialElevationScale(false)
     }
 
     override fun onCreateView(
