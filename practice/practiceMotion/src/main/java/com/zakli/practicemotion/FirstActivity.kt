@@ -1,9 +1,13 @@
 package com.zakli.practicemotion
 
 import android.os.Bundle
+import android.view.View
 import android.view.Window
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.transition.TransitionManager
+import com.google.android.material.transition.MaterialFade
 import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback
 
 /**
@@ -41,6 +45,8 @@ class FirstActivity: AppCompatActivity() {
 
         setContentView(R.layout.pmotion_first_activity)
 
+        val container = findViewById<ConstraintLayout>(R.id.container)
+
         supportFragmentManager.beginTransaction().apply {
             add(R.id.fragmentContainer, firstFragment)
             commit()
@@ -68,8 +74,60 @@ class FirstActivity: AppCompatActivity() {
         }
 
         // Container transform（Activity）
+        // 查看效果需要放开 FirstFragment、SecondFragment Container transform 注释
         findViewById<TextView>(R.id.changeActivity).setOnClickListener {
             SecondActivity.startActivity(this, it)
+        }
+
+        // Shared axis
+        // 查看效果需要放开 FirstFragment、SecondFragment Shared axis 注释
+        findViewById<TextView>(R.id.sharedAxisFragment).setOnClickListener {
+            val textView = it as TextView
+            if (onShowFirstFragment) {
+                textView.text = resources.getString(R.string.pmotion_shared_axis_go)
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentContainer, secondFragment, SecondFragment.TAG)
+                    .commit()
+            } else {
+                textView.text = resources.getString(R.string.pmotion_shared_axis_back)
+                supportFragmentManager.beginTransaction()
+                    .replace (R.id.fragmentContainer, firstFragment, FirstFragment.TAG)
+                    .commit()
+            }
+            onShowFirstFragment = !onShowFirstFragment
+        }
+
+        // Fade through
+        // 查看效果需要放开 FirstFragment、SecondFragment Fade through 注释
+        findViewById<TextView>(R.id.fadeThroughFragment).setOnClickListener {
+            if (onShowFirstFragment) {
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentContainer, secondFragment, SecondFragment.TAG)
+                    .commit()
+            } else {
+                supportFragmentManager.beginTransaction()
+                    .replace (R.id.fragmentContainer, firstFragment, FirstFragment.TAG)
+                    .commit()
+            }
+            onShowFirstFragment = !onShowFirstFragment
+        }
+
+        // Fade
+        val fadeTarget = findViewById<View>(R.id.fadeTarget)
+        findViewById<TextView>(R.id.fade).setOnClickListener {
+            if (fadeTarget.visibility != View.VISIBLE) {
+                val materialFade = MaterialFade().apply {
+                    duration = 300L
+                }
+                TransitionManager.beginDelayedTransition(container, materialFade)
+                fadeTarget.visibility = View.VISIBLE
+            } else {
+                val materialFade = MaterialFade().apply {
+                    duration = 300L
+                }
+                TransitionManager.beginDelayedTransition(container, materialFade)
+                fadeTarget.visibility = View.GONE
+            }
         }
     }
 }

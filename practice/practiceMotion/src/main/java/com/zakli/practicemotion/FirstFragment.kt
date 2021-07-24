@@ -5,9 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.google.android.material.transition.Hold
 import com.google.android.material.transition.MaterialContainerTransform
-import com.google.android.material.transition.MaterialElevationScale
+import com.google.android.material.transition.MaterialFadeThrough
+import com.google.android.material.transition.MaterialSharedAxis
 
 /**
  *
@@ -27,8 +27,15 @@ class FirstFragment: Fragment() {
         super.onCreate(savedInstanceState)
 
         sharedElementEnterTransition = MaterialContainerTransform()
-        // 可以设置其他元素的消失状态
-        exitTransition = MaterialElevationScale(false)
+        // 可以设置其他元素的消失状态（Container transform）
+//        exitTransition = MaterialElevationScale(false)
+
+        // Shared axis
+//        exitTransition = MaterialSharedAxis(MaterialSharedAxis.Z, true)
+//        reenterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, false)
+
+        // Fade through
+        exitTransition = MaterialFadeThrough()
     }
 
     override fun onCreateView(
@@ -44,12 +51,4 @@ class FirstFragment: Fragment() {
 
         shareView = view.findViewById(R.id.firstView)
     }
-
-//    fun go(target: Fragment, tag: String) {
-//        childFragmentManager.beginTransaction()
-//            .addSharedElement(checkNotNull(shareView), "shared_element_container")
-//            .replace(R.id.fragmentContainer, target, tag)
-//            .addToBackStack(tag)
-//            .commit()
-//    }
 }

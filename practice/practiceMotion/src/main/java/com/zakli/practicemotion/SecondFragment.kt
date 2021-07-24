@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.google.android.material.transition.MaterialContainerTransform
+import com.google.android.material.transition.MaterialFadeThrough
+import com.google.android.material.transition.MaterialSharedAxis
 
 /**
  *
@@ -24,7 +26,15 @@ class SecondFragment: Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        sharedElementEnterTransition = MaterialContainerTransform()
+        // Container transform
+//        sharedElementEnterTransition = MaterialContainerTransform()
+
+        // Shared axis
+//        enterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, true)
+//        returnTransition = MaterialSharedAxis(MaterialSharedAxis.Z, false)
+
+        // Fade through
+        enterTransition = MaterialFadeThrough()
     }
 
     override fun onCreateView(
@@ -40,12 +50,4 @@ class SecondFragment: Fragment() {
 
         shareView = view.findViewById(R.id.secondView)
     }
-
-//    fun go(target: Fragment, tag: String) {
-//        childFragmentManager.beginTransaction()
-//            .addSharedElement(checkNotNull(shareView), "shared_element_container")
-//            .replace(R.id.fragmentContainer, target, tag)
-//            .addToBackStack(tag)
-//            .commit()
-//    }
 }

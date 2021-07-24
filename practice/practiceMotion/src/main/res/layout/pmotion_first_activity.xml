@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/container"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <FrameLayout
         android:id="@+id/fragmentContainer"
         android:layout_width="match_parent"
-        android:layout_height="600dp"
+        android:layout_height="400dp"
         app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
@@ -33,5 +35,52 @@
         android:layout_marginBottom="12dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/changeFragment"/>
+
+    <TextView
+        android:id="@+id/sharedAxisFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:textSize="16sp"
+        android:text="@string/pmotion_shared_axis_go"
+        android:background="@color/pmotionColorAccent"
+        android:layout_marginBottom="12dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/changeActivity"/>
+
+    <TextView
+        android:id="@+id/fadeThroughFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:textSize="16sp"
+        android:text="@string/pmotion_fade_through"
+        android:background="@color/pmotionColorAccent"
+        android:layout_marginBottom="12dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/sharedAxisFragment"/>
+
+    <TextView
+        android:id="@+id/fade"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:textSize="16sp"
+        android:text="@string/pmotion_fade"
+        android:background="@color/pmotionColorAccent"
+        android:layout_marginBottom="12dp"
+        android:layout_marginStart="12dp"
+        app:layout_constraintStart_toEndOf="@+id/fadeThroughFragment"
+        app:layout_constraintTop_toTopOf="@+id/fadeThroughFragment"/>
+
+    <View
+        android:id="@+id/fadeTarget"
+        android:layout_width="48dp"
+        android:layout_height="0dp"
+        android:background="@color/pmotionColorAccent"
+        android:layout_marginStart="12dp"
+        app:layout_constraintStart_toEndOf="@+id/fade"
+        app:layout_constraintTop_toTopOf="@+id/fade"
+        app:layout_constraintBottom_toBottomOf="@+id/fade"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

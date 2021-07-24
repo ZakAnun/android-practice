@@ -1,7 +1,11 @@
 <resources>
     <string name="pmotion_name">PracticeMotion</string>
-    <string name="pmotion_go_first_fragment">Motion Go First Fragment</string>
-    <string name="pmotion_go_second_fragment">Motion Go Second Fragment</string>
-    <string name="pmotion_go_first_activity">Motion Go First Activity</string>
-    <string name="pmotion_go_second_activity">Motion Go Second Activity</string>
+    <string name="pmotion_go_first_fragment">Container transform Go First Fragment</string>
+    <string name="pmotion_go_second_fragment">Container transform Go Second Fragment</string>
+    <string name="pmotion_go_first_activity">Container transform Go First Activity</string>
+    <string name="pmotion_go_second_activity">Container transform Go Second Activity</string>
+    <string name="pmotion_shared_axis_go">Shared Axis Go Fragment</string>
+    <string name="pmotion_shared_axis_back">Shared Axis Back Fragment</string>
+    <string name="pmotion_fade_through">Fade through Fragment</string>
+    <string name="pmotion_fade">Fade</string>
 </resources>
