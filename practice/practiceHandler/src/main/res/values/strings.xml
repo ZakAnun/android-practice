@@ -7,4 +7,9 @@
     <string name="phandler_insert_async_msg">插入异步信息</string>
     <string name="phandler_receive_sync_msg">收到同步信息</string>
     <string name="phandler_receive_async_msg">收到异步信息</string>
+
+    <string name="phandler_activity_demo">Activity Demo</string>
+    <string name="phandler_a_go_single_instance_b">Go-Single-Instance-B</string>
+    <string name="phandler_b_go_single_instance_c">Go-Single-Instance-C</string>
+    <string name="phandler_c_go_single_instance_d">Go-Single-Instance-D</string>
 </resources>

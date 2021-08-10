@@ -270,5 +270,9 @@ class PracticeHandlerActivity: AppCompatActivity() {
             // do something when free
             false
         }
+
+        findViewById<TextView>(R.id.activityDemo).setOnClickListener {
+            AActivity.startActivity(this)
+        }
     }
 }

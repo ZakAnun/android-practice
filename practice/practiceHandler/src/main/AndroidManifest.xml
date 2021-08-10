@@ -18,6 +18,16 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".AActivity"
+            android:launchMode="standard"/>
+        <activity
+            android:name=".BActivity"
+            android:launchMode="singleInstance"/>
+        <activity
+            android:name=".CActivity"
+            android:launchMode="singleTask"/>
+
     </application>
 
 </manifest>
