@@ -2,6 +2,7 @@ package com.zakli.practiceview.view
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import android.view.MotionEvent
 import android.view.VelocityTracker
 import android.view.View
@@ -12,6 +13,10 @@ import kotlin.math.abs
 class PViewHorizontalLayout @JvmOverloads constructor(
     context: Context, attrs: AttributeSet ? = null, defStyleAttr: Int = 0
 ): ViewGroup(context, attrs, defStyleAttr) {
+
+    companion object {
+        private const val TAG = "PViewHorizontalLayout"
+    }
 
     private var childrenSize = 0
     private var mChildWidth = 0
@@ -81,7 +86,8 @@ class PViewHorizontalLayout @JvmOverloads constructor(
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
                 intercepted = false
-                if (!mScroller.isFinished) {
+                Log.d(TAG, "onInterceptTouchEvent: mScroller.isFinished = ${mScroller.isFinished}")
+                if (mScroller.isFinished) {
                     mScroller.abortAnimation()
                     intercepted = true
                 }
@@ -95,6 +101,7 @@ class PViewHorizontalLayout @JvmOverloads constructor(
                 intercepted = false
             }
         }
+        Log.d(TAG, "onInterceptTouchEvent: intercepted = $intercepted")
 
         mLastX = x
         mLastY = y
@@ -146,7 +153,7 @@ class PViewHorizontalLayout @JvmOverloads constructor(
         mLastX = x
         mLastY = y
 
-        return false
+        return super.onTouchEvent(event)
     }
 
     private fun smoothScrollBy(dx: Int) {

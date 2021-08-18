@@ -1,9 +1,7 @@
 package com.zakli.practiceview.view
 
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
+import android.graphics.*
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
@@ -17,6 +15,7 @@ class PViewCircleView @JvmOverloads constructor(
 
     private var mColor: Int = Color.RED
     private val mPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val bitmap: Bitmap = BitmapFactory.decodeResource(resources, R.mipmap.pview_icon, BitmapFactory.Options().apply { inPreferredConfig = Bitmap.Config.RGB_565 })
     private fun init() {
         mPaint.color = mColor
     }
@@ -59,5 +58,24 @@ class PViewCircleView @JvmOverloads constructor(
         val radius = width.coerceAtMost(height) / 2
         canvas.drawCircle((paddingLeft + width / 2).toFloat(),
             (paddingTop + height / 2).toFloat(), radius.toFloat(), mPaint)
+
+        canvas.save()
+        canvas.drawBitmap(bitmap, 0f, 0f, mPaint)
+        canvas.restore()
+    }
+
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+
+        when (event?.action) {
+            MotionEvent.ACTION_DOWN -> {
+                parent.requestDisallowInterceptTouchEvent(true)
+            }
+            MotionEvent.ACTION_MOVE,
+            MotionEvent.ACTION_UP -> {
+                parent.requestDisallowInterceptTouchEvent(false)
+            }
+        }
+
+        return super.onTouchEvent(event)
     }
 }
