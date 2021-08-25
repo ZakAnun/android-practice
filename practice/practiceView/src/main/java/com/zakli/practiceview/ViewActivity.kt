@@ -1,6 +1,9 @@
 package com.zakli.practiceview
 
 import android.os.Bundle
+import android.os.Looper
+import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.zakli.practiceview.view.PViewCircleView
@@ -206,6 +209,9 @@ import com.zakli.practiceview.view.PViewHorizontalLayout
  *    - 如果 View 设置了 OnClickListener，那么就会在 ACTION_UP 时调用它的 onClick 方法
  *    - View 的 clickable
  *     - 通过设置 OnClickListener 或 LongClickListener 可以分别改变 CLICKABLE 和 LONG_CLICKABLE 属性值
+ *
+ * include 标签如果不设置 id 默认会取被引入布局的 root 的 id 作为 id，如果设置了 id 就会取设置的 id
+ * merge 标签会取引入的布局的 root 作为根（view id 一样的话，就找不到了）
  */
 class ViewActivity: AppCompatActivity() {
 
@@ -220,5 +226,7 @@ class ViewActivity: AppCompatActivity() {
         findViewById<PViewCircleView>(R.id.circleView).setOnClickListener {
             Toast.makeText(this, "点击了第一个圆", Toast.LENGTH_SHORT).show()
         }
+
+        findViewById<TextView>(R.id.sameIdTv).text = "修改了 sameIdTv 的值"
     }
 }

@@ -134,4 +134,18 @@
         </FrameLayout>
 
     </com.zakli.practiceview.view.PViewHorizontalLayout>
+
+    <TextView
+        android:id="@+id/sameIdTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="一样的 id 在原布局中"
+        android:textSize="24sp"
+        android:padding="16dp"/>
+
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/pview_merge_same_id"/>
+
 </LinearLayout>
